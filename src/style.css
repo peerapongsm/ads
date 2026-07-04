@@ -6,7 +6,7 @@ body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; back
 
 .ad-card {
   position: relative; min-height: 132px; border-radius: 10px; cursor: pointer;
-  transform-style: preserve-3d; transition: transform .45s; will-change: transform;
+  transform-style: preserve-3d; transition: transform .45s;
 }
 .ad-card.flipped { transform: rotateY(180deg); }
 .ad-front, .ad-back {
@@ -56,6 +56,7 @@ dialog#about-modal::backdrop { background: rgba(0,0,0,.6); }
   .ad-card { transition: opacity .3s; }
   .ad-card.flipped { transform: none; }
   .ad-card.flipped .ad-front { display: none; }
-  .ad-back { position: relative; transform: none; }
+  .ad-back { position: relative; transform: none; display: none; }
+  .ad-card.flipped .ad-back { display: flex; }
   .s-neon .ad-front { animation: none; }
 }
