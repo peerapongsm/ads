@@ -1,0 +1,4 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "IBM Plex Sans Thai", sans-serif; background: #111; }
+#feed { display: flex; flex-direction: column; gap: 12px; max-width: 520px; margin: 0 auto; padding: 12px; }
+#sentinel { height: 1px; }
