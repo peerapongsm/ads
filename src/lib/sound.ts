@@ -39,6 +39,7 @@ export class SoundEngine {
     if (!this.enabled) return;
     const ctx = this.ensure();
     if (!ctx) return;
+    if (ctx.state === "suspended") void ctx.resume();
     const now = ctx.currentTime;
     for (const [i, freq] of [880, 1320].entries()) {
       const osc = ctx.createOscillator();
