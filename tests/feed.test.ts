@@ -17,6 +17,10 @@ describe("makeShuffleBag", () => {
     const first = [draw(), draw(), draw(), draw()];
     expect(new Set(first).size).toBe(4); // all distinct in one pass
   });
+  it("produces a deterministic draw order under a stubbed RNG", () => {
+    const draw = makeShuffleBag(["a", "b", "c"], seqRng([0]));
+    expect([draw(), draw(), draw()]).toEqual(["a", "c", "b"]);
+  });
 });
 
 describe("makeFeed", () => {
