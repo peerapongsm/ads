@@ -32,6 +32,17 @@ describe("renderCard", () => {
     expect(btn?.disabled).toBe(true);
     expect(btn?.textContent).toContain("เร็วๆ นี้");
   });
+  it("enables the shop button and sets data-url when the card is available", () => {
+    const available: FeedItem = { kind: "real", card: {
+      id: "af-live", title: "สินค้าจริง", priceText: "฿100",
+      network: "shopee", url: "https://example.com/x", available: true,
+    }};
+    const el = renderCard(available);
+    const btn = el.querySelector<HTMLButtonElement>(".shop-btn");
+    expect(btn?.disabled).toBe(false);
+    expect(btn?.textContent).toContain("ช้อปเลย");
+    expect(btn?.dataset.url).toBe("https://example.com/x");
+  });
 });
 
 describe("flipCard", () => {
