@@ -32,5 +32,5 @@ export function markRevealed(s: CounterState, id: string): CounterState {
 }
 
 export function distinctRealCount(s: CounterState): number {
-  return s.revealed.length;
+  return new Set(s.revealed).size;
 }

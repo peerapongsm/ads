@@ -37,4 +37,9 @@ describe("counter", () => {
   it("returns an empty counter when key is absent", () => {
     expect(loadCounter()).toEqual(emptyCounter());
   });
+
+  it("returns an empty counter on a malformed shape (wrong field types)", () => {
+    localStorage.setItem(KEY, JSON.stringify({ revealed: "nope", passed: -5 }));
+    expect(loadCounter()).toEqual(emptyCounter());
+  });
 });
