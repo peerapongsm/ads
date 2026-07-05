@@ -34,12 +34,21 @@ function sentinelEl(): HTMLElement {
   return document.getElementById(desktop ? "sentinel-masonry" : "sentinel-stream")!;
 }
 
-function appendBatch(host: HTMLElement, shape: Parameters<typeof renderTile>[2], n: number): void {
+// Renders tiles only — no counter side effects. Used for the initial fill
+// (first paint and breakpoint-crossing rebuilds), which the user hasn't
+// scrolled past yet and so must not count toward "เลื่อนผ่าน".
+function appendTiles(host: HTMLElement, shape: Parameters<typeof renderTile>[2], n: number): void {
   for (let i = 0; i < n; i++) {
     const item: FeedItem = next();
     host.appendChild(renderTile(item, Math.random, shape));
-    counter = markPassed(counter);
   }
+}
+
+// Genuine infinite-scroll append (sentinel-triggered): these tiles were
+// actually scrolled past, so they count.
+function appendBatch(host: HTMLElement, shape: Parameters<typeof renderTile>[2], n: number): void {
+  appendTiles(host, shape, n);
+  for (let i = 0; i < n; i++) counter = markPassed(counter);
   saveCounter(counter);
   paintCounter();
 }
@@ -47,7 +56,7 @@ function appendBatch(host: HTMLElement, shape: Parameters<typeof renderTile>[2],
 function fillRegions(): void {
   for (const region of buildRegions(window.innerWidth)) {
     const host = document.getElementById(region.host)!;
-    appendBatch(host, region.shape, region.count);
+    appendTiles(host, region.shape, region.count);
     enforceCap(host, NODE_CAP);
   }
 }
@@ -115,6 +124,7 @@ window.addEventListener("resize", () => {
         document.getElementById(id)!.innerHTML = "";
       }
       fillRegions();
+      paintCounter();
       startObserving();
     }
   }, 200);
@@ -123,4 +133,5 @@ window.addEventListener("resize", () => {
 // First fill + initial column count + sentinel wiring.
 masonryEl.style.setProperty("--cols", String(masonryColumns(window.innerWidth)));
 fillRegions();
+paintCounter();
 startObserving();
