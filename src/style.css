@@ -36,19 +36,24 @@ body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; back
 
 .tile {
   position: relative; border-radius: 10px; cursor: pointer; overflow: hidden;
-  transform-style: preserve-3d; transition: transform .45s;
+  transition: opacity .3s;
   box-shadow: 0 0 0 2px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.45);
 }
 .tile[data-shape="masonry"] { aspect-ratio: 4 / 3; }
 .tile[data-shape="strip"] { aspect-ratio: 8 / 1; }
 .tile[data-shape="tall"] { aspect-ratio: 1 / 4; }
-.tile.flipped { transform: rotateY(180deg); }
+/* Flip = swap which face is displayed. A real 3D rotateY flip is unreliable
+   here: .tile needs overflow:hidden to clip the photo, but overflow != visible
+   flattens transform-style:preserve-3d, so the back face never surfaces (and its
+   buy-btn stays unclickable). Display-toggle is robust and testable. */
 .face-front, .face-back {
   position: absolute; inset: 0; padding: 14px; border-radius: 10px;
-  backface-visibility: hidden; display: flex; flex-direction: column; gap: 6px; justify-content: center;
+  display: flex; flex-direction: column; gap: 6px; justify-content: center;
   border: 2px solid rgba(0,0,0,.15); background: #1a1a22; color: #fff; overflow: hidden;
 }
-.face-back { transform: rotateY(180deg); background: #fff; color: #111; }
+.face-back { display: none; background: #fff; color: #111; }
+.tile.flipped .face-front { display: none; }
+.tile.flipped .face-back { display: flex; }
 .reveal-tag { font-weight: 700; color: #b91c1c; }
 .reveal-real { color: #047857; }
 .reveal-en { opacity: .7; font-size: .85em; }
@@ -220,11 +225,7 @@ dialog#about-modal { max-width: 380px; border: none; border-radius: 12px; paddin
 dialog#about-modal::backdrop { background: rgba(0,0,0,.6); }
 
 @media (prefers-reduced-motion: reduce) {
-  .tile { transition: opacity .3s; }
-  .tile.flipped { transform: none; }
-  .tile.flipped .face-front { display: none; }
-  .face-back { position: relative; transform: none; display: none; }
-  .tile.flipped .face-back { display: flex; }
+  .tile { transition: none; }
   .s-neon .face-front { animation: none; }
   .tile-cta { animation: none; }
   .motif-svg { animation: none; }
