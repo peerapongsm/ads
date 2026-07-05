@@ -38,6 +38,11 @@ export function renderTile(item: FeedItem, rng: RNG, shape: SlotShape): HTMLElem
   if (item.kind === "fake") {
     const a = item.ad;
     const template = TEMPLATES.find((t) => t.id === a.template);
+    // Unreachable defensive fallback: every fake ad's `template` comes from a real
+    // TEMPLATES entry (generator.ts), so `find` always hits. If a future caller ever
+    // passed an unknown template id, this synthetic Template has no imageQuery (→ motif
+    // path) and its style would miss MOTIF_BY_STYLE → "none" → EMPTY motif, regressing
+    // the procedural-motif guarantee. Keep template ids sourced from TEMPLATES.
     const spec = pickBanner(
       template ?? { id: a.template, style: a.style, weight: 0, headlines: [], subtexts: [], ctas: [], reveal: a.reveal },
       rng,

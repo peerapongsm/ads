@@ -81,6 +81,24 @@ describe("renderTile", () => {
     }
   });
 
+  it("renders the fake reveal text on the back (patternTh/En + explainer)", () => {
+    const item: FeedItem = { kind: "fake", ad: {
+      id: "f9", template: "gambling", style: "s-casino",
+      headline: "สมัครรับ 100 ทันที!", subtext: "เว็บตรง", cta: "สมัครเลย",
+      reveal: { patternTh: "โฆษณาพนันผิดกฎหมาย", patternEn: "Illegal Gambling Ad", explainer: "ล่อด้วยเงินฟรี" },
+    }};
+    const t = renderTile(item, seq([0, 0, 0]), "masonry");
+    const back = t.querySelector(".face-back")?.textContent ?? "";
+    expect(back).toContain("โฆษณาพนันผิดกฎหมาย");
+    expect(back).toContain("Illegal Gambling Ad");
+    expect(back).toContain("ล่อด้วยเงินฟรี");
+  });
+
+  it("a fake tile has NO data-real-id", () => {
+    const t = renderTile(fakePhoto, seq([0, 0, 0]), "masonry");
+    expect(t.dataset.realId).toBeUndefined();
+  });
+
   it("still renders a real card correctly (unchanged back, no photo/motif)", () => {
     const t = renderTile(real, Math.random, "masonry");
     expect(t.dataset.style).toBe("s-real");
@@ -90,6 +108,19 @@ describe("renderTile", () => {
     expect(t.querySelector(".face-back")?.textContent).toContain("affiliate link");
     const shop = t.querySelector<HTMLButtonElement>(".buy-btn");
     expect(shop?.disabled).toBe(true);
+    expect(shop?.textContent).toContain("เร็วๆ นี้");
+  });
+
+  it("enables the shop button and sets data-url when the real card is available", () => {
+    const available: FeedItem = { kind: "real", card: {
+      id: "af-live", title: "สินค้าจริง", priceText: "฿100",
+      network: "shopee", url: "https://example.com/x", available: true,
+    }};
+    const t = renderTile(available, Math.random, "masonry");
+    const shop = t.querySelector<HTMLButtonElement>(".buy-btn");
+    expect(shop?.disabled).toBe(false);
+    expect(shop?.textContent).toBe("ช้อปเลย →");
+    expect(shop?.dataset.url).toBe("https://example.com/x");
   });
 });
 
@@ -113,5 +144,12 @@ describe("enforceCap", () => {
     enforceCap(box, 6);
     expect(box.childElementCount).toBe(6);
     expect(box.firstElementChild?.textContent).toBe("4");
+  });
+
+  it("does nothing when the container is under the cap", () => {
+    const box = document.createElement("div");
+    for (let i = 0; i < 3; i++) box.appendChild(document.createElement("div"));
+    enforceCap(box, 6);
+    expect(box.childElementCount).toBe(3);
   });
 });
