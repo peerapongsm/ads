@@ -1,5 +1,5 @@
 import { makeFeed, type FeedItem } from "./lib/feed";
-import { renderCard, flipCard, enforceCap } from "./lib/dom";
+import { renderTile, flipCard, enforceCap } from "./lib/dom";
 import {
   loadCounter, saveCounter, markPassed, markRevealed, distinctRealCount,
   type CounterState,
@@ -26,7 +26,7 @@ function paintCounter(): void {
 function appendBatch(n: number): void {
   for (let i = 0; i < n; i++) {
     const item: FeedItem = next();
-    feedEl.appendChild(renderCard(item));
+    feedEl.appendChild(renderTile(item, Math.random, "masonry"));
     counter = markPassed(counter);
   }
   enforceCap(feedEl, NODE_CAP);
