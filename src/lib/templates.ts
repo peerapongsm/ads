@@ -8,6 +8,7 @@ export type Template = {
   subtexts: string[];
   ctas: string[];
   reveal: Reveal;
+  imageQuery?: string[];
 };
 
 export const TEMPLATES: Template[] = [
@@ -17,6 +18,7 @@ export const TEMPLATES: Template[] = [
     subtexts: ["กดรับภายใน 3 นาที ก่อนหมดสิทธิ์", "เหลือผู้โชคดีอีกแค่ 2 คนเท่านั้น", "คลิกเพื่อยืนยันตัวตนและรับรางวัล"],
     ctas: ["รับรางวัลเลย", "กดรับสิทธิ์", "ยืนยันรับของ"],
     reveal: { patternTh: "เหยื่อล่อรางวัลปลอม", patternEn: "Fake Prize", explainer: "ปั่นให้ตื่นเต้นแล้วคลิก ไม่มีรางวัลจริง" },
+    imageQuery: ["gold coins", "confetti", "gift box", "jackpot"],
   },
   {
     id: "diet-miracle", style: "s-before-after", weight: 11,
@@ -24,6 +26,7 @@ export const TEMPLATES: Template[] = [
     subtexts: ["สาวออฟฟิศแห่ใช้ รีวิวแน่นเพจ", "ธรรมชาติ 100% ไม่โยโย่", "หมอในคลินิกดังไม่กล้าบอก"],
     ctas: ["สั่งซื้อด่วน", "ดูรีวิว", "ทักแชทเลย"],
     reveal: { patternTh: "หลอกขายด้วยสุขภาพ", patternEn: "Health-Scam Clickbait", explainer: "อ้างหมอ+ผลลัพธ์เกินจริง กระตุ้นความอยากผอม" },
+    imageQuery: ["measuring tape", "green smoothie", "supplement pills"],
   },
   {
     id: "predatory-loan", style: "s-cash", weight: 10,
@@ -31,6 +34,7 @@ export const TEMPLATES: Template[] = [
     subtexts: ["ดอกเบี้ยเริ่มต้น 0% (เดือนแรก)", "แค่มีบัตรประชาชนก็กู้ได้", "รับทุกอาชีพ ติดแบล็กลิสต์ก็ผ่าน"],
     ctas: ["สมัครกู้เลย", "เช็ควงเงิน", "ทักแชท"],
     reveal: { patternTh: "สินเชื่อล่าเหยื่อ", patternEn: "Predatory Lending", explainer: "อวดอนุมัติง่าย ซ่อนดอกเบี้ยโหด ล่าคนสิ้นหวัง" },
+    imageQuery: ["cash stack", "banknotes", "gold coins"],
   },
   {
     id: "gambling", style: "s-casino", weight: 9,
@@ -38,6 +42,7 @@ export const TEMPLATES: Template[] = [
     subtexts: ["ฝากถอนออโต้ ไม่มีขั้นต่ำ", "โบนัสสมาชิกใหม่ 200%", "มีทีมงานดูแล 24 ชม."],
     ctas: ["สมัครเลย", "รับโบนัส", "เข้าเล่น"],
     reveal: { patternTh: "โฆษณาพนันผิดกฎหมาย", patternEn: "Illegal Gambling Ad", explainer: "ล่อด้วยเงินฟรี ปกปิดว่าเจ้ามือได้เปรียบเสมอ" },
+    imageQuery: ["casino chips", "roulette wheel", "playing cards", "dice"],
   },
   {
     id: "fake-virus", style: "s-system", weight: 9,
@@ -66,6 +71,7 @@ export const TEMPLATES: Template[] = [
     subtexts: ["นักลงทุนวงในแนะนำ", "พรีเซลเหลือ 3% สุดท้าย", "โอกาสเปลี่ยนชีวิตมาแล้ว"],
     ctas: ["ซื้อเลย", "เข้ากลุ่มวีไอพี", "จองพรีเซล"],
     reveal: { patternTh: "ปั่นราคาคริปโต", patternEn: "Pump Hype", explainer: "อ้างกำไรมหาศาล เร่งให้รีบซื้อก่อนโดนเทขาย" },
+    imageQuery: ["gold bitcoin coin", "trading chart", "candlestick chart"],
   },
   {
     id: "fake-countdown", style: "s-countdown", weight: 8,
@@ -87,5 +93,6 @@ export const TEMPLATES: Template[] = [
     subtexts: ["เสริมดวงด้วยวัตถุมงคล (มีสปอนเซอร์)", "ปังการเงิน แต่ต้องพก...", "อาจารย์ดังทำนายไว้"],
     ctas: ["ดูดวงเต็ม", "รับเลขเด็ด", "เสริมดวงเลย"],
     reveal: { patternTh: "คอนเทนต์แฝงโฆษณา", patternEn: "Sponsored-Content Disguise", explainer: "ปลอมเป็นดูดวง/บทความ แต่จริงๆ คือโฆษณาขายของ" },
+    imageQuery: ["tarot cards", "crystal gemstone", "starry night sky", "incense smoke"],
   },
 ];
