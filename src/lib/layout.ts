@@ -1,4 +1,4 @@
-export type SlotShape = "leaderboard" | "skyscraper" | "masonry";
+export type SlotShape = "strip" | "tall" | "masonry";
 
 export function isDesktop(width: number): boolean {
   return width >= 721;
@@ -11,16 +11,16 @@ export function masonryColumns(width: number): number {
 
 export type Region = { shape: SlotShape; count: number; host: string };
 
-// Desktop hosts avoid ad-unit-slot words ("leaderboard") in ids/classes — those are
-// themselves cosmetic-filter targets. The SlotShape *type value* stays "leaderboard"
-// (a logic identifier consumed by banner.ts's pickBanner + the aspect-ratio CSS
-// selector on data-shape); only the container host name is neutral.
+// Desktop hosts avoid ad-unit-slot words in ids/classes — those are themselves
+// cosmetic-filter targets. The SlotShape *type value* is likewise neutral (a
+// logic identifier consumed by banner.ts's pickBanner + the aspect-ratio CSS
+// selector on data-shape); only the container host name matters for that.
 export function buildRegions(width: number): Region[] {
   if (!isDesktop(width)) {
     return [{ shape: "masonry", count: 60, host: "stream" }];
   }
   return [
-    { shape: "leaderboard", count: 1, host: "topstrip" },
+    { shape: "strip", count: 1, host: "topstrip" },
     { shape: "masonry", count: 60, host: "masonry" },
   ];
 }

@@ -47,7 +47,7 @@ describe("renderTile", () => {
   });
 
   it("renders a procedural motif (no photo) for a template with no imageQuery", () => {
-    const t = renderTile(fakeProcedural, seq([0, 0, 0]), "leaderboard");
+    const t = renderTile(fakeProcedural, seq([0, 0, 0]), "strip");
     expect(t.dataset.style).toBe("s-consent");
     expect(t.querySelector(".tile-photo")).toBeNull();
     expect(t.querySelector(".tile-motif")).not.toBeNull();

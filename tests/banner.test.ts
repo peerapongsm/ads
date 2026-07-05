@@ -16,11 +16,11 @@ describe("pickBanner", () => {
     expect(WORDMARKS).toContain(b.wordmark);
   });
   it("returns null photo (procedural) when template has no imageQuery", () => {
-    const b = pickBanner(procT, seq([0.5]), "leaderboard", banks);
+    const b = pickBanner(procT, seq([0.5]), "strip", banks);
     expect(b.photo).toBeNull();
   });
   it("returns null photo when pool is empty even for a photo template", () => {
-    const b = pickBanner(photoT, seq([0.5]), "skyscraper", {});
+    const b = pickBanner(photoT, seq([0.5]), "tall", {});
     expect(b.photo).toBeNull();
     expect(b.motif).toBe("chips");
   });

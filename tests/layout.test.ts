@@ -10,7 +10,7 @@ describe("buildRegions", () => {
     const r = buildRegions(1280);
     expect(r.map((x) => x.host)).toEqual(["topstrip", "masonry"]);
     expect(r.find((x) => x.host === "topstrip")!.count).toBe(1);
-    expect(r.find((x) => x.host === "topstrip")!.shape).toBe("leaderboard");
+    expect(r.find((x) => x.host === "topstrip")!.shape).toBe("strip");
     expect(r.find((x) => x.host === "masonry")!.count).toBe(60);
   });
 });
