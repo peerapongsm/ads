@@ -8,17 +8,17 @@ function el(tag: string, cls?: string, text?: string): HTMLElement {
 }
 
 export function renderCard(item: FeedItem): HTMLElement {
-  const card = el("div", "ad-card");
-  const front = el("div", "ad-front");
-  const back = el("div", "ad-back");
+  const card = el("div", "tile");
+  const front = el("div", "face-front");
+  const back = el("div", "face-back");
 
   if (item.kind === "fake") {
     const a = item.ad;
     card.classList.add(a.style);
     front.append(
-      el("div", "ad-headline", a.headline),
-      el("div", "ad-subtext", a.subtext),
-      el("button", "ad-cta", a.cta),
+      el("div", "tile-title", a.headline),
+      el("div", "tile-sub", a.subtext),
+      el("button", "tile-cta", a.cta),
     );
     back.append(
       el("div", "reveal-tag", "เสียดสี"),
@@ -31,12 +31,12 @@ export function renderCard(item: FeedItem): HTMLElement {
     card.classList.add("s-real");
     card.dataset.realId = c.id;
     front.append(
-      el("div", "ad-headline", c.title),
-      el("div", "ad-price", c.priceText),
-      el("button", "ad-cta", "ดูสินค้า"),
+      el("div", "tile-title", c.title),
+      el("div", "tile-price", c.priceText),
+      el("button", "tile-cta", "ดูสินค้า"),
     );
     const shop = document.createElement("button");
-    shop.className = "shop-btn";
+    shop.className = "buy-btn";
     if (c.available) {
       shop.textContent = "ช้อปเลย →";
       shop.dataset.url = c.url;
@@ -52,7 +52,7 @@ export function renderCard(item: FeedItem): HTMLElement {
   }
 
   // decorative front CTAs must not steal the flip/tap
-  front.querySelectorAll("button.ad-cta").forEach((b) => ((b as HTMLButtonElement).tabIndex = -1));
+  front.querySelectorAll("button.tile-cta").forEach((b) => ((b as HTMLButtonElement).tabIndex = -1));
 
   card.append(front, back);
   return card;

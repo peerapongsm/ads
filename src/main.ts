@@ -9,9 +9,9 @@ import { SoundEngine, loadSoundPref, saveSoundPref } from "./lib/sound";
 const NODE_CAP = 60;
 const BATCH = 6;
 
-const feedEl = document.getElementById("feed")!;
+const feedEl = document.getElementById("stream")!;
 const sentinel = document.getElementById("sentinel")!;
-const counterBadge = document.getElementById("counter-badge")!;
+const counterBadge = document.getElementById("stat-chip")!;
 
 const next = makeFeed();
 const sound = new SoundEngine();
@@ -37,12 +37,12 @@ function appendBatch(n: number): void {
 // Flip on tap (delegated). Real "ช้อปเลย" navigates only via its button.
 feedEl.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
-  const shop = target.closest<HTMLButtonElement>(".shop-btn");
+  const shop = target.closest<HTMLButtonElement>(".buy-btn");
   if (shop && !shop.disabled && shop.dataset.url) {
     window.open(shop.dataset.url, "_blank", "noopener");
     return;
   }
-  const card = target.closest<HTMLElement>(".ad-card");
+  const card = target.closest<HTMLElement>(".tile");
   if (!card) return;
   const flipped = flipCard(card);
   sound.jingle();

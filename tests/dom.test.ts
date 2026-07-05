@@ -14,9 +14,9 @@ const real: FeedItem = { kind: "real", card: {
 describe("renderCard", () => {
   it("renders a fake card whose back names the dark pattern", () => {
     const el = renderCard(fake);
-    expect(el.classList.contains("ad-card")).toBe(true);
-    expect(el.querySelector(".ad-front")?.textContent).toContain("สมัครรับ 100");
-    const back = el.querySelector(".ad-back")?.textContent ?? "";
+    expect(el.classList.contains("tile")).toBe(true);
+    expect(el.querySelector(".face-front")?.textContent).toContain("สมัครรับ 100");
+    const back = el.querySelector(".face-back")?.textContent ?? "";
     expect(back).toContain("Illegal Gambling Ad");
     expect(back).toContain("โฆษณาพนันผิดกฎหมาย");
     expect(el.dataset.realId).toBeUndefined();
@@ -24,11 +24,11 @@ describe("renderCard", () => {
   it("renders a real card with data-real-id and an affiliate label", () => {
     const el = renderCard(real);
     expect(el.dataset.realId).toBe("af-mug");
-    expect(el.querySelector(".ad-back")?.textContent).toContain("affiliate link");
+    expect(el.querySelector(".face-back")?.textContent).toContain("affiliate link");
   });
   it("disables the shop button when the card is unavailable", () => {
     const el = renderCard(real);
-    const btn = el.querySelector<HTMLButtonElement>(".shop-btn");
+    const btn = el.querySelector<HTMLButtonElement>(".buy-btn");
     expect(btn?.disabled).toBe(true);
     expect(btn?.textContent).toContain("เร็วๆ นี้");
   });
@@ -38,7 +38,7 @@ describe("renderCard", () => {
       network: "shopee", url: "https://example.com/x", available: true,
     }};
     const el = renderCard(available);
-    const btn = el.querySelector<HTMLButtonElement>(".shop-btn");
+    const btn = el.querySelector<HTMLButtonElement>(".buy-btn");
     expect(btn?.disabled).toBe(false);
     expect(btn?.textContent).toContain("ช้อปเลย");
     expect(btn?.dataset.url).toBe("https://example.com/x");

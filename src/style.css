@@ -1,62 +1,62 @@
 * { box-sizing: border-box; }
 body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; background: #0b0b0f; color: #111; }
 
-#feed { display: flex; flex-direction: column; gap: 14px; max-width: 520px; margin: 0 auto; padding: 64px 12px 72px; }
+#stream { display: flex; flex-direction: column; gap: 14px; max-width: 520px; margin: 0 auto; padding: 64px 12px 72px; }
 #sentinel { height: 1px; }
 
-.ad-card {
+.tile {
   position: relative; min-height: 132px; border-radius: 10px; cursor: pointer;
   transform-style: preserve-3d; transition: transform .45s;
 }
-.ad-card.flipped { transform: rotateY(180deg); }
-.ad-front, .ad-back {
+.tile.flipped { transform: rotateY(180deg); }
+.face-front, .face-back {
   position: absolute; inset: 0; padding: 14px; border-radius: 10px;
   backface-visibility: hidden; display: flex; flex-direction: column; gap: 6px; justify-content: center;
   border: 2px solid rgba(0,0,0,.15);
 }
 /* height driver: flow copy of front so the card has intrinsic height */
-.ad-card::before { content: ""; display: block; min-height: 132px; }
-.ad-back { transform: rotateY(180deg); background: #fff; color: #111; }
+.tile::before { content: ""; display: block; min-height: 132px; }
+.face-back { transform: rotateY(180deg); background: #fff; color: #111; }
 .reveal-tag { font-weight: 700; color: #b91c1c; }
 .reveal-real { color: #047857; }
 .reveal-en { opacity: .7; font-size: .85em; }
-.ad-headline { font-weight: 700; font-size: 1.15rem; }
-.ad-cta { align-self: flex-start; border: none; padding: 6px 14px; border-radius: 999px; font: inherit; font-weight: 700; }
-.shop-btn { margin-top: 8px; align-self: flex-start; padding: 8px 16px; border-radius: 8px; border: none; font: inherit; font-weight: 700; background: #ee4d2d; color: #fff; cursor: pointer; }
-.shop-btn:disabled { background: #bbb; cursor: default; }
+.tile-title { font-weight: 700; font-size: 1.15rem; }
+.tile-cta { align-self: flex-start; border: none; padding: 6px 14px; border-radius: 999px; font: inherit; font-weight: 700; }
+.buy-btn { margin-top: 8px; align-self: flex-start; padding: 8px 16px; border-radius: 8px; border: none; font: inherit; font-weight: 700; background: #ee4d2d; color: #fff; cursor: pointer; }
+.buy-btn:disabled { background: #bbb; cursor: default; }
 
 /* --- per-template garish looks --- */
-.s-neon .ad-front { background: linear-gradient(45deg,#ff00cc,#3333ff); color:#fff; animation: blink 1s steps(2) infinite; }
-.s-system .ad-front { background:#e8e8e8; border:2px solid #888; font-family: system-ui, sans-serif; }
-.s-consent .ad-front { background:#fff; }
-.s-consent .ad-cta { background:#16a34a; color:#fff; font-size:1.2rem; padding:12px 28px; }
-.s-casino .ad-front { background:radial-gradient(circle,#2b0000,#000); color:gold; }
-.s-crypto .ad-front { background:linear-gradient(#111,#003); color:#0f0; }
-.s-countdown .ad-front { background:#fff3cd; color:#b45309; }
-.s-chumbox .ad-front { background:#fafafa; }
-.s-before-after .ad-front { background:#fde68a; }
-.s-cash .ad-front { background:#065f46; color:#fff; }
-.s-modal .ad-front { background:#fff; }
-.s-horoscope .ad-front { background:linear-gradient(#4c1d95,#7c3aed); color:#fde68a; }
-.s-real .ad-front { background:#fff; color:#111; }
+.s-neon .face-front { background: linear-gradient(45deg,#ff00cc,#3333ff); color:#fff; animation: blink 1s steps(2) infinite; }
+.s-system .face-front { background:#e8e8e8; border:2px solid #888; font-family: system-ui, sans-serif; }
+.s-consent .face-front { background:#fff; }
+.s-consent .tile-cta { background:#16a34a; color:#fff; font-size:1.2rem; padding:12px 28px; }
+.s-casino .face-front { background:radial-gradient(circle,#2b0000,#000); color:gold; }
+.s-crypto .face-front { background:linear-gradient(#111,#003); color:#0f0; }
+.s-countdown .face-front { background:#fff3cd; color:#b45309; }
+.s-chumbox .face-front { background:#fafafa; }
+.s-before-after .face-front { background:#fde68a; }
+.s-cash .face-front { background:#065f46; color:#fff; }
+.s-modal .face-front { background:#fff; }
+.s-horoscope .face-front { background:linear-gradient(#4c1d95,#7c3aed); color:#fde68a; }
+.s-real .face-front { background:#fff; color:#111; }
 
 @keyframes blink { 50% { filter: hue-rotate(180deg); } }
 
 /* --- chrome as ads --- */
-.ad-chrome { position: fixed; z-index: 10; font-size: .8rem; }
-#counter-badge { top: 8px; left: 8px; background:#111; color:#0f0; padding:4px 8px; border-radius:4px; font-family: monospace; }
+.chrome { position: fixed; z-index: 10; font-size: .8rem; }
+#stat-chip { top: 8px; left: 8px; background:#111; color:#0f0; padding:4px 8px; border-radius:4px; font-family: monospace; }
 #sound-toggle { top: 8px; right: 44px; background:#fbbf24; border:none; border-radius:4px; padding:4px 8px; cursor:pointer; }
 #about-btn { top: 8px; right: 8px; width:28px; height:28px; border-radius:50%; border:1px solid #999; background:#fff; cursor:pointer; }
-#disclosure-bar { left: 0; right: 0; bottom: 0; background:#1f2937; color:#e5e7eb; text-align:center; padding:8px; }
+#foot-note { left: 0; right: 0; bottom: 0; background:#1f2937; color:#e5e7eb; text-align:center; padding:8px; }
 
 dialog#about-modal { max-width: 380px; border: none; border-radius: 12px; padding: 22px; }
 dialog#about-modal::backdrop { background: rgba(0,0,0,.6); }
 
 @media (prefers-reduced-motion: reduce) {
-  .ad-card { transition: opacity .3s; }
-  .ad-card.flipped { transform: none; }
-  .ad-card.flipped .ad-front { display: none; }
-  .ad-back { position: relative; transform: none; display: none; }
-  .ad-card.flipped .ad-back { display: flex; }
-  .s-neon .ad-front { animation: none; }
+  .tile { transition: opacity .3s; }
+  .tile.flipped { transform: none; }
+  .tile.flipped .face-front { display: none; }
+  .face-back { position: relative; transform: none; display: none; }
+  .tile.flipped .face-back { display: flex; }
+  .s-neon .face-front { animation: none; }
 }
