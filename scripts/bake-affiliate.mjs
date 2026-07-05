@@ -1,5 +1,9 @@
-// Bake the 5 real Shopee affiliate listing photos into public/banners/affiliate/.
-// Run manually to refresh: `node scripts/bake-affiliate.mjs`
+// Bake the real Shopee affiliate listing photos into public/banners/affiliate/.
+// Manual refresh tool only (baked images are committed; CI/prod never run this).
+// `sharp` is NOT a project dependency (it churns the lockfile cross-platform and
+// breaks `npm ci` on the Linux Pages runner) — install it ad-hoc first:
+//   npm i -D sharp && node scripts/bake-affiliate.mjs
+// then `npm uninstall sharp && git checkout package-lock.json` before committing.
 import { readFileSync, writeFileSync, mkdirSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
