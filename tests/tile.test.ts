@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { renderTile, flipCard, enforceCap } from "../src/lib/dom";
+import { TEMPLATES } from "../src/lib/templates";
 import type { FeedItem } from "../src/lib/feed";
 
 const seq = (xs: number[]) => { let i = 0; return () => xs[i++ % xs.length]!; };
@@ -61,6 +62,23 @@ describe("renderTile", () => {
     const front = t.querySelector(".face-front")!;
     const kids = Array.from(front.children).map((c) => c.className.split(" ")[0]);
     expect(kids).toEqual(["tile-photo", "tile-scrim", "wordmark", "tile-title", "tile-sub", "tile-cta"]);
+  });
+
+  it("every procedural template (no imageQuery) yields a NON-EMPTY motif", () => {
+    const procedural = TEMPLATES.filter((t) => !t.imageQuery);
+    expect(procedural.length).toBeGreaterThan(0);
+    for (const t of procedural) {
+      const item: FeedItem = { kind: "fake", ad: {
+        id: `f-${t.id}`, template: t.id, style: t.style,
+        headline: t.headlines[0]!, subtext: t.subtexts[0]!, cta: t.ctas[0]!, reveal: t.reveal,
+      }};
+      const tile = renderTile(item, () => 0, "masonry");
+      const motif = tile.querySelector<HTMLElement>(".tile-motif");
+      expect(motif, `motif element for ${t.id}`).not.toBeNull();
+      expect(tile.querySelector(".tile-photo"), `no photo for ${t.id}`).toBeNull();
+      expect(motif!.innerHTML.trim(), `non-empty motif svg for ${t.id}`).not.toBe("");
+      expect(motif!.querySelector("svg"), `<svg> present for ${t.id}`).not.toBeNull();
+    }
   });
 
   it("still renders a real card correctly (unchanged back, no photo/motif)", () => {

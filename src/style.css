@@ -32,12 +32,22 @@ body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; back
 .tile-motif {
   position: absolute; inset: 0; z-index: 0;
   display: flex; align-items: center; justify-content: center;
-  opacity: .55; pointer-events: none;
+  opacity: .9; pointer-events: none;
 }
-.motif-svg { width: 62%; max-width: 220px; filter: drop-shadow(0 0 10px currentColor); animation: motif-pulse 2.6s ease-in-out infinite; }
+/* procedural (no photo) → motif is the hero graphic: large, bold, off-center watermark */
+.motif-svg {
+  width: 78%; max-width: 260px; margin-bottom: -6%;
+  filter: drop-shadow(0 0 12px currentColor) drop-shadow(0 3px 6px rgba(0,0,0,.45));
+  animation: motif-pulse 2.6s ease-in-out infinite;
+}
 .tile-scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,.85) 100%);
+}
+/* Don't let the photo-legibility scrim flatten a no-photo tile: keep the garish
+   s-* background visible, add just enough bottom shade to seat the copy. */
+.face-front:has(.tile-motif) .tile-scrim {
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.28) 78%, rgba(0,0,0,.55) 100%);
 }
 
 /* --- copy, always painted above photo/motif/scrim --- */
@@ -74,44 +84,56 @@ body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; back
 .s-neon .face-front { background: linear-gradient(45deg,#ff00cc,#3333ff); animation: blink 1s steps(2) infinite; }
 .s-neon .tile-title { color: #fff; text-shadow: 0 0 8px #ff00cc, 0 0 18px #3333ff, 0 2px 2px rgba(0,0,0,.8); }
 
-.s-system .face-front { background:#e8e8e8; border:2px solid #888; font-family: system-ui, sans-serif; color: #111; }
+.s-system .face-front { background:linear-gradient(160deg,#f1f5f9,#cbd5e1); border:2px solid #64748b; font-family: system-ui, sans-serif; color: #111; }
 .s-system .tile-title { color: #b91c1c; text-shadow: 0 0 4px rgba(185,28,28,.5); }
 .s-system .wordmark { background: linear-gradient(120deg,#e5e7eb,#9ca3af); color: #111; box-shadow: 0 0 8px rgba(0,0,0,.35); }
+.s-system .tile-motif { color: #b91c1c; }
 
-.s-consent .face-front { background:#fff; color: #111; }
-.s-consent .tile-title, .s-consent .tile-sub { text-shadow: none; }
+.s-consent .face-front { background:linear-gradient(180deg,#ffffff,#e7eef7); color: #111; border:2px solid #c98a3c; }
+.s-consent .tile-title { color: #111; text-shadow: none; }
+.s-consent .tile-sub { color: #334155; text-shadow: none; }
 .s-consent .tile-cta { background:#16a34a; color:#fff; font-size:1.2rem; padding:12px 28px; animation: none; box-shadow: 0 4px 12px rgba(22,163,74,.5); }
+.s-consent .tile-motif { color: #7c4a1e; }
 
 .s-casino .face-front { background:radial-gradient(circle,#2b0000,#000); }
 .s-casino .tile-title { color: gold; text-shadow: 0 0 8px gold, 0 0 18px #b91c1c; }
-.motif-svg, .s-casino .tile-motif { color: gold; }
+.s-casino .tile-motif { color: gold; }
 
 .s-crypto .face-front { background:linear-gradient(#111,#003); }
 .s-crypto .tile-title { color: #0f0; text-shadow: 0 0 8px #0f0, 0 0 18px #003; }
 .s-crypto .tile-motif { color: #0f0; }
 
-.s-countdown .face-front { background:#fff3cd; color:#b45309; }
-.s-countdown .tile-title { text-shadow: 0 0 6px rgba(180,83,9,.5); }
+.s-countdown .face-front { background:linear-gradient(160deg,#fff3cd,#fca5a5); color:#b45309; }
+.s-countdown .tile-title { color: #9a3412; text-shadow: 0 1px 2px rgba(255,255,255,.5); }
+.s-countdown .tile-sub { color: #b45309; text-shadow: none; }
+.s-countdown .tile-motif { color: #dc2626; }
 
-.s-chumbox .face-front { background:#fafafa; color: #111; }
-.s-chumbox .tile-title { text-shadow: none; }
+.s-chumbox .face-front { background:linear-gradient(160deg,#fafafa,#e2e8f0); color: #111; }
+.s-chumbox .tile-title { color: #111; text-shadow: none; }
+.s-chumbox .tile-sub { color: #334155; text-shadow: none; }
+.s-chumbox .tile-motif { color: #ef4444; }
 
 .s-before-after .face-front { background:#fde68a; color: #7c2d12; }
-.s-before-after .tile-title { text-shadow: 0 0 4px rgba(124,45,18,.4); }
+.s-before-after .tile-title { color: #7c2d12; text-shadow: 0 1px 2px rgba(255,255,255,.4); }
+.s-before-after .tile-sub { color: #92400e; text-shadow: none; }
+.s-before-after .tile-motif { color: #b91c1c; }
 
 .s-cash .face-front { background:#065f46; }
 .s-cash .tile-title { color: #fde68a; text-shadow: 0 0 8px #fde68a, 0 0 16px #065f46; }
 .s-cash .tile-motif { color: #fde68a; }
 
-.s-modal .face-front { background:#fff; color: #111; }
-.s-modal .tile-title, .s-modal .tile-sub { text-shadow: none; }
+.s-modal .face-front { background:linear-gradient(180deg,#ffffff,#fce7f3); color: #111; border:2px solid #ec4899; }
+.s-modal .tile-title { color: #111; text-shadow: none; }
+.s-modal .tile-sub { color: #334155; text-shadow: none; }
+.s-modal .tile-motif { color: #db2777; }
 
 .s-horoscope .face-front { background:linear-gradient(#4c1d95,#7c3aed); }
 .s-horoscope .tile-title { color: #fde68a; text-shadow: 0 0 8px #fde68a, 0 0 18px #7c3aed; }
 .s-horoscope .tile-motif { color: #fde68a; }
 
 .s-real .face-front { background:#fff; color:#111; }
-.s-real .tile-title { text-shadow: none; }
+.s-real .tile-title { color: #111; text-shadow: none; }
+.s-real .tile-price { color: #ee4d2d; font-weight: 800; font-size: 1.25rem; }
 
 @keyframes blink { 50% { filter: hue-rotate(180deg); } }
 
