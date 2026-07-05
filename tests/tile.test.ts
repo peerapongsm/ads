@@ -122,6 +122,34 @@ describe("renderTile", () => {
     expect(shop?.textContent).toBe("ช้อปเลย →");
     expect(shop?.dataset.url).toBe("https://example.com/x");
   });
+
+  it("a real card WITH image renders the product photo, keeps the buy-flow intact, and never opens on flip", () => {
+    const withImage: FeedItem = { kind: "real", card: {
+      id: "af-smarttag", title: "Smart Tag ติดตามตำแหน่งสัตว์เลี้ยง สวมปลอกคอ", priceText: "฿255",
+      network: "shopee", url: "https://s.shopee.co.th/80AoPrx7HD", available: true,
+      image: "/banners/affiliate/smarttag.webp",
+    }};
+    const t = renderTile(withImage, Math.random, "masonry");
+    expect(t.dataset.style).toBe("s-real");
+    const photo = t.querySelector<HTMLElement>(".tile-photo");
+    expect(photo).not.toBeNull();
+    expect(photo!.style.backgroundImage).toContain("/banners/affiliate/smarttag.webp");
+    // title stays in the DOM for a11y even though it's visually minimal
+    expect(t.querySelector(".tile-title")?.textContent).toBe("Smart Tag ติดตามตำแหน่งสัตว์เลี้ยง สวมปลอกคอ");
+    expect(t.querySelector(".tile-price")?.textContent).toBe("฿255");
+    // front CTA is decorative only — flip is what reveals the affiliate back
+    const frontCta = t.querySelector<HTMLButtonElement>(".face-front button.tile-cta");
+    expect(frontCta?.tabIndex).toBe(-1);
+    expect(t.classList.contains("flipped")).toBe(false);
+    // buy-flow: available:true still enables .buy-btn with the real url
+    const shop = t.querySelector<HTMLButtonElement>(".buy-btn");
+    expect(shop?.disabled).toBe(false);
+    expect(shop?.dataset.url).toBe("https://s.shopee.co.th/80AoPrx7HD");
+    // flip reveals the affiliate disclosure on the back, buy-btn still there
+    expect(flipCard(t)).toBe(true);
+    expect(t.querySelector(".face-back")?.textContent).toContain("affiliate link");
+    expect(t.querySelector(".buy-btn")).toBe(shop);
+  });
 });
 
 describe("flipCard", () => {

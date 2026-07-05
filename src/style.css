@@ -186,6 +186,27 @@ body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; back
 .s-real .tile-title { color: #111; text-shadow: none; }
 .s-real .tile-price { color: #ee4d2d; font-weight: 800; font-size: 1.25rem; }
 
+/* real card WITH a product photo: the listing image is the hero on a clean
+   white face (contain, not cover — a Shopee listing photo shouldn't get
+   cropped), price becomes a floating corner chip, and the title shrinks to a
+   minimal a11y caption since the image already shows the product. Selectors
+   scoped under .s-real + higher specificity than the generic
+   .face-front:has(.tile-photo) rules (fake photo tiles) so real cards don't
+   inherit the garish dark-plate treatment. */
+.s-real .tile-photo { background-size: contain; background-color: #fff; filter: none; }
+.s-real .face-front:has(.tile-photo) { justify-content: flex-end; }
+.s-real .face-front:has(.tile-photo) .tile-price {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  background: #ee4d2d; color: #fff; font-size: 1rem; padding: 4px 12px;
+  border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+.s-real .face-front:has(.tile-photo) .tile-title {
+  align-self: flex-start; width: auto; max-width: 100%;
+  background: none; padding: 0; border-radius: 0; box-shadow: none; text-shadow: none;
+  font-size: .78rem; font-weight: 600; color: #111; opacity: .75;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
 @keyframes blink { 50% { filter: hue-rotate(180deg); } }
 
 /* --- chrome as ads --- */

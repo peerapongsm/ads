@@ -79,6 +79,11 @@ export function renderTile(item: FeedItem, rng: RNG, shape: SlotShape): HTMLElem
     card.classList.add("s-real");
     card.dataset.style = "s-real";
     card.dataset.realId = c.id;
+    if (c.image) {
+      const photo = el("div", "tile-photo");
+      photo.style.backgroundImage = `url("${c.image}")`;
+      front.append(photo);
+    }
     front.append(
       el("div", "tile-title", c.title),
       el("div", "tile-price", c.priceText),
