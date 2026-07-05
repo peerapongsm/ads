@@ -38,12 +38,31 @@ function tokens(src: string, rel: string): string[] {
       out.push(m[1]!);
     }
   }
+  // TS object-literal `key: "value"` string literals (layout.ts / templates.ts
+  // use plain colon syntax, not the HTML `key="value"` syntax matched above).
+  // Scoped to keys whose values actually reach the DOM as a class/dataset/id
+  // (style, shape, host) — quoted-string literals only, so this never touches
+  // unquoted member access like `item.ad`. `id:` in templates.ts is a purely
+  // internal template identifier (never rendered), so it's deliberately not
+  // scanned here — only `.style` from that same object reaches the DOM.
+  if (rel.endsWith(".ts")) {
+    for (const m of src.matchAll(/\b(?:style|shape|host)\s*:\s*["'`]([^"'`]+)["'`]/g)) {
+      out.push(...m[1]!.split(/[.#-]/));
+    }
+  }
 
   return out.filter(Boolean);
 }
 
 describe("adblock-safe naming", () => {
-  for (const rel of ["index.html", "src/style.css", "src/lib/dom.ts", "src/main.ts"]) {
+  for (const rel of [
+    "index.html",
+    "src/style.css",
+    "src/lib/dom.ts",
+    "src/main.ts",
+    "src/lib/templates.ts",
+    "src/lib/layout.ts",
+  ]) {
     it(`${rel} has no ad-trigger tokens`, () => {
       const src = readFileSync(join(root, rel), "utf8");
       const bad = tokens(src, rel).filter((t) => TRIGGER.test(t));
