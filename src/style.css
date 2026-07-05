@@ -65,6 +65,27 @@ body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; back
   color: #fff; text-shadow: 0 0 6px currentColor, 0 0 14px rgba(255,255,255,.35), 0 2px 2px rgba(0,0,0,.8);
 }
 .tile-sub { font-size: .88rem; opacity: .92; text-shadow: 0 1px 3px rgba(0,0,0,.9); }
+
+/* Photo tiles: bright photos (gold coins, green smoothie, gold bitcoin) wash out
+   the colored-glow titles. Seat title/sub on a localized dark plate that hugs the
+   text (photo stays visible around it) + a strong solid-dark text-shadow, keeping
+   the per-style colored glow only as an accent. Scoped to photo tiles → no effect
+   on procedural (.tile-motif) or real (s-real) tiles. */
+.face-front:has(.tile-photo) .tile-title,
+.face-front:has(.tile-photo) .tile-sub {
+  align-self: flex-start; width: fit-content; max-width: 100%;
+  background: rgba(0,0,0,.62); padding: 3px 9px; border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.5);
+}
+.face-front:has(.tile-photo) .tile-title {
+  text-shadow: 0 1px 2px #000, 0 0 4px rgba(0,0,0,.95), 0 0 11px currentColor;
+}
+.face-front:has(.tile-photo) .tile-sub {
+  color: #f1f5f9; opacity: 1; text-shadow: 0 1px 2px #000;
+}
+/* diet tile's default title is dark brown — invisible on a dark plate; lift to a
+   light warm color (its own glow accent follows via currentColor). */
+.s-before-after .face-front:has(.tile-photo) .tile-title { color: #fde68a; }
 .tile-cta {
   align-self: flex-start; border: none; padding: 7px 16px; border-radius: 999px; font: inherit; font-weight: 800;
   background: linear-gradient(120deg, #ff2d55, #ff8a00); color: #fff;
