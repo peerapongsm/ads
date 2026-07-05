@@ -15,7 +15,6 @@ export type AffiliateCard = {
 // BatchProductLinks export (generated 2026-07-04).
 export const AFFILIATES: AffiliateCard[] = [
   { id: "af-smarttag", title: "Smart Tag ติดตามตำแหน่งสัตว์เลี้ยง สวมปลอกคอ", priceText: "฿255", network: "shopee", url: "https://s.shopee.co.th/80AoPrx7HD", available: true, image: "/banners/affiliate/smarttag.webp" },
-  { id: "af-gamepad", title: "จอยเกมส์ไร้สาย บลูทูธ PC/มือถือ", priceText: "฿269", network: "shopee", url: "https://s.shopee.co.th/4fuMRk9o2t", available: true, image: "/banners/affiliate/gamepad.webp" },
   { id: "af-sharpener", title: "เครื่องเหลาดินสอตั้งโต๊ะ สีพาสเทล", priceText: "฿215", network: "shopee", url: "https://s.shopee.co.th/6pyr1j1Yed", available: true, image: "/banners/affiliate/sharpener.webp" },
   { id: "af-bikelight", title: "ไฟหน้าจักรยาน LED ชาร์จ USB", priceText: "฿310", network: "shopee", url: "https://s.shopee.co.th/60Pk2C4jKV", available: true, image: "/banners/affiliate/bikelight.webp" },
   { id: "af-cloth", title: "ผ้าไมโครไฟเบอร์เช็ดรถ หนานุ่ม ซับน้ำไว", priceText: "฿125", network: "shopee", url: "https://s.shopee.co.th/7Kv7clsZba", available: true, image: "/banners/affiliate/cloth.webp" },

@@ -11,7 +11,7 @@ const SRC_DIR = "C:/Users/User/Desktop/project-365/docs/materials/affiliate";
 const OUT_DIR = join(ROOT, "public", "banners", "affiliate");
 
 // slug -> source filename (both already share the same basename in this case).
-const SLUGS = ["smarttag", "gamepad", "sharpener", "bikelight", "cloth"];
+const SLUGS = ["smarttag", "sharpener", "bikelight", "cloth"];
 
 async function main() {
   mkdirSync(OUT_DIR, { recursive: true });
