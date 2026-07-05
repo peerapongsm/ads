@@ -1,8 +1,38 @@
 * { box-sizing: border-box; }
 body { margin: 0; font-family: "IBM Plex Sans Thai", system-ui, sans-serif; background: #0b0b0f; color: #111; }
 
+/* --- mobile: single-column stream (default, ≤720px) --- */
 #stream { display: flex; flex-direction: column; gap: 14px; max-width: 520px; margin: 0 auto; padding: 64px 12px 72px; }
-#sentinel { height: 1px; }
+#sentinel-stream { height: 1px; }
+
+/* --- desktop: ad-choked portal (≥721px) — hidden on mobile --- */
+#topstrip, #masonry, #sentinel-masonry { display: none; }
+
+@media (min-width: 721px) {
+  #stream, #sentinel-stream { display: none; }
+
+  #topstrip {
+    display: block;
+    padding: 56px 10px 6px;
+    max-width: 100%;
+  }
+  #topstrip .tile { width: 100%; }
+
+  #masonry {
+    display: block;
+    column-count: var(--cols, 5);
+    column-gap: 6px;
+    padding: 10px 10px 72px;
+    max-width: 100%;
+  }
+  #masonry .tile {
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    margin: 0 0 6px;
+    width: 100%;
+  }
+  #sentinel-masonry { height: 1px; }
+}
 
 .tile {
   position: relative; border-radius: 10px; cursor: pointer; overflow: hidden;

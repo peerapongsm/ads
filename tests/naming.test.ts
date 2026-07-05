@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const TRIGGER = /(?:^|[-_ ])(ads?|sponsor|banner|promo|advert|popup)(?:$|[-_ ])/i;
+const TRIGGER = /(?:^|[-_ ])(ads?|sponsor|banner|promo|advert|popup|leaderboard|skyscraper|billboard|mpu|adslot|adunit|dfp)(?:$|[-_ ])/i;
 
 // Pull every class/id token a browser (or ad-blocker) would see: HTML
 // attributes, CSS selector heads, and the DOM-API call sites that build or

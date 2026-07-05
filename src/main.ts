@@ -1,5 +1,6 @@
 import { makeFeed, type FeedItem } from "./lib/feed";
 import { renderTile, flipCard, enforceCap } from "./lib/dom";
+import { buildRegions, isDesktop, masonryColumns } from "./lib/layout";
 import {
   loadCounter, saveCounter, markPassed, markRevealed, distinctRealCount,
   type CounterState,
@@ -9,13 +10,14 @@ import { SoundEngine, loadSoundPref, saveSoundPref } from "./lib/sound";
 const NODE_CAP = 60;
 const BATCH = 6;
 
-const feedEl = document.getElementById("stream")!;
-const sentinel = document.getElementById("sentinel")!;
 const counterBadge = document.getElementById("stat-chip")!;
+const masonryEl = document.getElementById("masonry")!;
 
-const next = makeFeed();
+let next = makeFeed();
 const sound = new SoundEngine();
 let counter: CounterState = loadCounter();
+let desktop = isDesktop(window.innerWidth);
+let io: IntersectionObserver | null = null;
 
 sound.setEnabled(loadSoundPref());
 
@@ -23,19 +25,47 @@ function paintCounter(): void {
   counterBadge.textContent = `เจอของจริง ${distinctRealCount(counter)} · เลื่อนผ่าน ${counter.passed} ชิ้น`;
 }
 
-function appendBatch(n: number): void {
+// The infinite host is the one that grows on scroll: #masonry on desktop, #stream on mobile.
+function infiniteHost(): HTMLElement {
+  return document.getElementById(desktop ? "masonry" : "stream")!;
+}
+
+function sentinelEl(): HTMLElement {
+  return document.getElementById(desktop ? "sentinel-masonry" : "sentinel-stream")!;
+}
+
+function appendBatch(host: HTMLElement, shape: Parameters<typeof renderTile>[2], n: number): void {
   for (let i = 0; i < n; i++) {
     const item: FeedItem = next();
-    feedEl.appendChild(renderTile(item, Math.random, "masonry"));
+    host.appendChild(renderTile(item, Math.random, shape));
     counter = markPassed(counter);
   }
-  enforceCap(feedEl, NODE_CAP);
   saveCounter(counter);
   paintCounter();
 }
 
-// Flip on tap (delegated). Real "ช้อปเลย" navigates only via its button.
-feedEl.addEventListener("click", (e) => {
+function fillRegions(): void {
+  for (const region of buildRegions(window.innerWidth)) {
+    const host = document.getElementById(region.host)!;
+    appendBatch(host, region.shape, region.count);
+    enforceCap(host, NODE_CAP);
+  }
+}
+
+function startObserving(): void {
+  io?.disconnect();
+  io = new IntersectionObserver((entries) => {
+    if (entries.some((en) => en.isIntersecting)) {
+      const host = infiniteHost();
+      appendBatch(host, "masonry", BATCH);
+      enforceCap(host, NODE_CAP);
+    }
+  }, { rootMargin: "600px" });
+  io.observe(sentinelEl());
+}
+
+// Flip on tap (delegated to a common ancestor covering every host).
+document.body.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
   const shop = target.closest<HTMLButtonElement>(".buy-btn");
   if (shop && !shop.disabled && shop.dataset.url) {
@@ -53,12 +83,6 @@ feedEl.addEventListener("click", (e) => {
   }
 });
 
-// Endless append when the sentinel scrolls into view.
-const io = new IntersectionObserver((entries) => {
-  if (entries.some((en) => en.isIntersecting)) appendBatch(BATCH);
-}, { rootMargin: "600px" });
-io.observe(sentinel);
-
 // Chrome: sound toggle, about modal.
 const soundBtn = document.getElementById("sound-toggle") as HTMLButtonElement;
 function paintSound(): void {
@@ -75,5 +99,28 @@ const aboutModal = document.getElementById("about-modal") as HTMLDialogElement;
 document.getElementById("about-btn")!.addEventListener("click", () => aboutModal.showModal());
 document.getElementById("about-close")!.addEventListener("click", () => aboutModal.close());
 
-// First fill (enough to overflow the viewport so the sentinel can retrigger).
-appendBatch(NODE_CAP);
+// Debounced resize: rebuild from scratch only when crossing the mobile/desktop
+// breakpoint (counter persists); otherwise on desktop just re-fill the width.
+let resizeTimer: ReturnType<typeof setTimeout> | undefined;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    const width = window.innerWidth;
+    masonryEl.style.setProperty("--cols", String(masonryColumns(width)));
+    const nowDesktop = isDesktop(width);
+    if (nowDesktop !== desktop) {
+      desktop = nowDesktop;
+      next = makeFeed();
+      for (const id of ["topstrip", "masonry", "stream"]) {
+        document.getElementById(id)!.innerHTML = "";
+      }
+      fillRegions();
+      startObserving();
+    }
+  }, 200);
+});
+
+// First fill + initial column count + sentinel wiring.
+masonryEl.style.setProperty("--cols", String(masonryColumns(window.innerWidth)));
+fillRegions();
+startObserving();
